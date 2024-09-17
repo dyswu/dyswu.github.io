@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Derek's Interactive Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1000;
+            height: 60px;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            position: relative;
+            justify-content: space-between;
+        }
+
+        .hamburger {
+            font-size: 1.5em;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #fff;
+            position: absolute;
+            left: 20px;
+            z-index: 1001;
+        }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        .menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background: #333;
+            width: 200px;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+            .menu a {
+                display: block;
+                color: #fff;
+                padding: 10px 15px;
+                text-decoration: none;
+                border-bottom: 1px solid #444;
+            }
+
+                .menu a:hover {
+                    background: #555;
+                }
+
+        .hero {
+            background: url('https://via.placeholder.com/1920x1080?text=Hero+Image') no-repeat center center/cover;
+            color: #fff;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+            .hero h1 {
+                margin: 0;
+                font-size: 3em;
+                opacity: 0;
+                transform: translateY(-20px);
+                animation: fadeInUp 1s forwards;
+            }
+
+            .hero p {
+                font-size: 1.2em;
+                margin: 20px 0;
+                opacity: 0;
+                transform: translateY(-20px);
+                animation: fadeInUp 1.2s forwards;
+                animation-delay: 0.5s;
+            }
+
+            .hero button {
+                background-color: #ff6f61;
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                font-size: 1em;
+                cursor: pointer;
+                border-radius: 5px;
+                opacity: 0;
+                transform: translateY(-20px);
+                animation: fadeInUp 1.4s forwards;
+                animation-delay: 1s;
+            }
+
+                .hero button:hover {
+                    background-color: #ff5a4a;
+                }
+
+        .section {
+            padding: 20px;
+            text-align: center;
+        }
+
+            .section h2 {
+                margin-bottom: 20px;
+                font-size: 2.5em;
+            }
+
+        .portfolio {
+            background-color: #ffffff;
+            padding: 40px 20px;
+        }
+
+        .carousel {
+            position: relative;
+            max-width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 0 10px;
+        }
+
+            .carousel-item img {
+                width: 100%;
+                border-radius: 8px;
+                transition: transform 0.3s ease;
+            }
+
+            .carousel-item:hover img {
+                transform: scale(1.05);
+            }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-control {
+            background: rgba(0,0,0,0.5);
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1.5em;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+            .carousel-control:hover {
+                background: rgba(0,0,0,0.8);
+            }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .hero p {
+                font-size: 1em;
+            }
+
+            .carousel-item h3 {
+                font-size: 1.2em;
+            }
+
+            .carousel-item p {
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8em;
+            }
+
+            .hero p {
+                font-size: 0.9em;
+            }
+
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            .carousel-item {
+                max-width: 100%;
+            }
+
+                .carousel-item h3 {
+                    font-size: 1.1em;
+                }
+
+                .carousel-item p {
+                    font-size: 0.8em;
+                }
+        }
+        /* Contact Popup Styles */
+        .contact-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 20px;
+            display: none;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+            .contact-popup h3 {
+                margin: 0 0 10px;
+            }
+
+            .contact-popup form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .contact-popup input, .contact-popup textarea {
+                margin-bottom: 10px;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+            .contact-popup button {
+                background-color: #ff6f61;
+                border: none;
+                color: white;
+                padding: 10px;
+                cursor: pointer;
+                border-radius: 4px;
+                font-size: 1em;
+            }
+
+                .contact-popup button:hover {
+                    background-color: #ff5a4a;
+                }
+
+            .contact-popup .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: rgba(0,0,0,0.5);
+                border: none;
+                color: white;
+                padding: 5px;
+                font-size: 1.5em;
+                cursor: pointer;
+                border-radius: 50%;
+            }
+
+                .contact-popup .close-btn:hover {
+                    background: rgba(0,0,0,0.8);
+                }
+
+        footer {
+            background: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+            footer h4 {
+                margin: 0 0 10px;
+            }
+
+            footer p {
+                margin: 5px 0;
+            }
+
+            footer a {
+                color: #ff6f61;
+                text-decoration: none;
+            }
+
+                footer a:hover {
+                    text-decoration: underline;
+                }
+        /* Back to Top Button */
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(100%);
+        }
+
+            .back-to-top.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .back-to-top:hover {
+                background-color: #ff5a4a;
+            }
+
+        /* Expandable Menu */
+        .expandable-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .menu-left {
+            flex: 1;
+            padding: 20px;
+            text-align: left;
+        }
+
+            .menu-left h2 {
+                margin: 0;
+                font-size: 2em;
+            }
+
+            .menu-left p {
+                font-size: 1.2em;
+                margin-top: 10px;
+                color: #666;
+            }
+
+        .menu-right {
+            flex: 2;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+            .menu-right .attribute {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+                .menu-right .attribute button {
+                    background-color: #ff6f61;
+                    color: white;
+                    border: none;
+                    padding: 10px;
+                    width: 100%;
+                    text-align: left;
+                    cursor: pointer;
+                    font-size: 1em;
+                    border-bottom: 1px solid #ddd;
+                }
+
+                    .menu-right .attribute button:hover {
+                        background-color: #ff5a4a;
+                    }
+
+            .menu-right .attribute-content {
+                display: none;
+                padding: 10px;
+                background-color: #f9f9f9;
+                color: #666;
+            }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <button class="hamburger" id="hamburger">&#9776;</button>
+            <h1 class="header-title">Derek's Portfolio</h1>
+            <nav class="menu" id="menu">
+                <a href="#about">About</a>
+                <a href="#my-work">My Work</a>
+                <a href="#temporary">Temporary</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>Welcome to My Portfolio</h1>
+        <p>Exploring innovations and creating solutions.</p>
+        <button>Get in Touch</button>
+    </div>
+
+    <div class="section" id="about">
+        <h2>About Me</h2>
+        <p>I'm Derek, a Technical Product Manager with a passion for building innovative products and solutions.</p>
+    </div>
+
+    <!-- Expandable Menu -->
+    <div class="section expandable-menu">
+        <div class="menu-left">
+            <h2>Expandable Menu</h2>
+            <p>Explore the details of the attributes below:</p>
+        </div>
+        <div class="menu-right">
+            <div class="attribute">
+                <button class="expand-btn">Attribute 1</button>
+                <div class="attribute-content">
+                    <p>Details about Attribute 1. This section provides more in-depth information and context.</p>
+                </div>
+            </div>
+            <div class="attribute">
+                <button class="expand-btn">Attribute 2</button>
+                <div class="attribute-content">
+                    <p>Details about Attribute 2. This section includes additional insights and explanations.</p>
+                </div>
+            </div>
+            <div class="attribute">
+                <button class="expand-btn">Attribute 3</button>
+                <div class="attribute-content">
+                    <p>Details about Attribute 3. Here you'll find further details and related information.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section portfolio" id="my-work">
+        <h2>My Work</h2>
+        <div class="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item">
+                    <img src="https://via.placeholder.com/600x400?text=Project+One" alt="Project 1">
+                    <h3>Project One</h3>
+                    <p>An innovative platform that streamlined operations and increased efficiency.</p>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://via.placeholder.com/600x400?text=Project+Two" alt="Project 2">
+                    <h3>Project Two</h3>
+                    <p>A user-centric app that enhanced engagement and user experience.</p>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://via.placeholder.com/600x400?text=Project+Three" alt="Project 3">
+                    <h3>Project Three</h3>
+                    <p>A product launch that exceeded growth targets and set new benchmarks.</p>
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-control prev">&#10094;</button>
+                <button class="carousel-control next">&#10095;</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="temporary">
+        <h2>Temporary</h2>
+        <p>This section is for temporary content and updates.</p>
+    </div>
+
+    <!-- Contact Popup -->
+    <div class="contact-popup" id="contactPopup">
+        <button class="close-btn" id="closePopup">&times;</button>
+        <h3>Contact Me</h3>
+        <form>
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea rows="4" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <h4>Contact Information</h4>
+        <p>Email: <a href="mailto:derek@example.com">derek@example.com</a></p>
+        <p>Phone: <a href="tel:+1234567890">+123 456 7890</a></p>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/derek" target="_blank">derek</a></p>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">&#8679;</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const prevButton = document.querySelector('.carousel-control.prev');
+            const nextButton = document.querySelector('.carousel-control.next');
+            const carouselInner = document.querySelector('.carousel-inner');
+            const contactPopup = document.getElementById('contactPopup');
+            const closePopupButton = document.getElementById('closePopup');
+            const hamburger = document.getElementById('hamburger');
+            const menu = document.getElementById('menu');
+            const backToTopButton = document.getElementById('backToTop');
+            let index = 0;
+            let autoSlideInterval;
+            let hasRotated = false;
+            const items = document.querySelectorAll('.carousel-item');
+            const totalItems = items.length;
+
+            function updateCarousel() {
+                const offset = -index * 100;
+                carouselInner.style.transform = `translateX(${offset}%)`;
+            }
+
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(() => {
+                    if (!contactPopup.classList.contains('show')) {
+                        nextButton.click();
+                    }
+                }, 5000); // Change slide every 5 seconds
+            }
+
+            function stopAutoSlide() {
+                clearInterval(autoSlideInterval);
+            }
+
+            function handleManualScroll() {
+                stopAutoSlide(); // Stop auto-slide when manually scrolling
+                hasRotated = true;
+            }
+
+            prevButton.addEventListener('click', function () {
+                index = (index > 0) ? index - 1 : totalItems - 1;
+                updateCarousel();
+                handleManualScroll();
+            });
+
+            nextButton.addEventListener('click', function () {
+                index = (index < totalItems - 1) ? index + 1 : 0;
+                updateCarousel();
+                handleManualScroll();
+            });
+
+            // Start auto-slide when the page loads
+            startAutoSlide();
+
+            // Show contact popup when scrolling to the bottom
+            window.addEventListener('scroll', function () {
+                if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+                    contactPopup.style.display = 'block';
+                    stopAutoSlide(); // Stop auto-slide when popup is shown
+                }
+
+                // Show "Back to Top" button
+                if (window.scrollY > 200) {
+                    backToTopButton.classList.add('show');
+                } else {
+                    backToTopButton.classList.remove('show');
+                }
+            });
+
+            // Scroll to top functionality
+            backToTopButton.addEventListener('click', function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Close contact popup
+            closePopupButton.addEventListener('click', function () {
+                contactPopup.style.display = 'none';
+                startAutoSlide(); // Resume auto-slide when popup is closed
+            });
+
+            // Prevent popup dismissal from clicking outside
+            document.addEventListener('click', function (event) {
+                if (event.target === contactPopup) {
+                    contactPopup.style.display = 'none';
+                    startAutoSlide(); // Resume auto-slide when popup is closed
+                }
+            });
+
+            // Hamburger menu toggle
+            hamburger.addEventListener('click', function () {
+                menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+            });
+
+            // Expandable Menu
+            document.querySelectorAll('.expand-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const content = this.nextElementSibling;
+                    content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
